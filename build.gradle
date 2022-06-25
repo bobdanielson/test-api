@@ -1,7 +1,12 @@
 plugins {
-    id("com.github.johnrengelman.shadow") version "7.1.2"
-    id("io.micronaut.application") version "3.4.1"
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
+    id 'io.micronaut.application' version '3.4.1'
+    id 'org.jetbrains.kotlin.jvm' version '1.7.0'
+    id 'org.jetbrains.kotlin.kapt' version '1.7.0'
+    id 'org.jetbrains.kotlin.plugin.allopen' version '1.7.0'
 }
+
+//apply plugin: jacoco
 
 version = "0.1"
 group = "test.api"
@@ -12,12 +17,19 @@ repositories {
 
 dependencies {
     annotationProcessor("io.micronaut:micronaut-http-validation")
-    implementation("io.micronaut:micronaut-http-client")
-    implementation("io.micronaut:micronaut-jackson-databind")
-    implementation("jakarta.annotation:jakarta.annotation-api")
-    runtimeOnly("ch.qos.logback:logback-classic")
-    implementation("io.micronaut:micronaut-validation")
 
+    implementation "io.micronaut:micronaut-http-client"
+    implementation "io.micronaut:micronaut-jackson-databind"
+    implementation "jakarta.annotation:jakarta.annotation-api"
+    implementation "io.micronaut:micronaut-validation"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+
+    runtimeOnly("ch.qos.logback:logback-classic")
+
+    kapt "io.micronaut:micronaut-inject-java"
+    kapt "io.micronaut:micronaut-validation"
+
+    kaptTest "io.micronaut:micronaut-inject-java-test"
 }
 
 
@@ -36,6 +48,16 @@ micronaut {
     processing {
         incremental(true)
         annotations("test.api.*")
+    }
+}
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+compileTestKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
     }
 }
 
